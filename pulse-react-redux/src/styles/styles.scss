@@ -1,0 +1,56 @@
+$icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@mixin calc($property, $expression) {
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}
+
+/* Variables */
+$vin-blue: #5bb7db;
+$vin-green: #60b044;
+$vin-red: #ff0000;
+
+:local(.classButton) {
+  @extend .btn;
+  width: 200px;
+  height: 200px;
+  //color: #FFC271;
+  background-color: #FFC271;
+  border-radius: 50%;
+  //@include calc(border-radius, '100% / 2px');
+}
+
+$margins: (xs: 0.5rem, sm: 1rem, md: 1.5rem, lg: 2rem, xl: 2.5rem);
+
+@each $name, $value in $margins {
+  .margin-top-#{$name} {
+    margin-top: $value;
+  }
+
+  .margin-bottom-#{$name} {
+    margin-bottom: $value;
+  }
+}
+
+.pulse-class-font-size {
+  font-size: 3em;
+}
+
+.pulse-table-responsive {
+  @extend .table-responsive;
+  overflow-x: auto;
+}
+
+.pulse-navbar {
+  background-color: #FFC271;
+}
+
+.pulse-navbar-link-active {
+  background-color: #CCCCCC;
+}
+
+.pulse-body {
+  background-color: #CCCCCC;
+}
