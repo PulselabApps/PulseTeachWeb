@@ -2,14 +2,6 @@ import fetch from 'isomorphic-fetch';
 import * as types from '../constants/ActionTypes';
 import * as serverConstants from '../constants/ServerConstants';
 
-export function saveFuelSavings(settings) {
-	return { type: types.SAVE_FUEL_SAVINGS, settings };
-}
-
-export function calculateFuelSavings(settings, fieldName, value) {
-	return { type: types.CALCULATE_FUEL_SAVINGS, settings, fieldName, value };
-}
-
 export function requestLoginUser(request) {
 	return { type: types.REQUEST_LOGIN_USER, request};
 }
@@ -24,6 +16,24 @@ export function requestClasses(sessionToken) {
 
 export function receiveClasses(pulseClasses) {
 	return { type: types.RECEIVE_CLASSES, pulseClasses};
+}
+
+/*
+settings: {
+  classId: String,
+  sessionToken: String
+}
+ */
+export function requestClassSessions(settings) {
+  return { type: types.REQUEST_CLASS_SESSIONS, settings}
+}
+
+export function receiveClassSessions(classSessions) {
+  return { type: types.RECEIVE_CLASS_SESSIONS, classSessions};
+}
+
+export function setCurrentClass(index) {
+  return { type: types.SET_CURRENT_CLASS, index};
 }
 
 export function loginUser(request) {
@@ -95,4 +105,34 @@ export function fetchPulseClassesIfNeeded(sessionToken) {
 			return dispatch(fetchPulseClasses(sessionToken));
 		}
 	}
+}
+
+//isFetchingClassSessions
+export function fetchClassSessions(settings) {
+  return dispatch => {
+    dispatch(requestClassSessions(settings));
+    const url = serverConstants.getClassSessions(settings.classId) + "?sessionToken=" + settings.sessionToken;
+    return fetch(url)
+      .then(response => response.json())
+      .then(json => dispatch(receiveClasses(json)));
+  }
+}
+
+export function shouldFetchClassSessions(state) {
+  const currentClassState = state.currentClassState;
+  if(!currentClassState) {
+    return true;
+  } else if(currentClassState.isFetchingClassSessions) {
+    return false;
+  } else {
+    return currentClassState.didInvalidateClassSessions;
+  }
+}
+
+export function fetchClassSessionsIfNeeded(settings) {
+  return (dispatch, getState) => {
+    if(shouldFetchClassSessions(getState())) {
+      return dispatch(fetchClassSessions(settings));
+    }
+  }
 }

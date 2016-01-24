@@ -22,7 +22,7 @@ class App extends React.Component {
       <div>
         <Navbar user={pulseAppState.user} actions={actions}/>
         <h1>Hello</h1>
-      <PulseSummary pulseAppState={pulseAppState} actions={actions}/>
+        {this.props.children}
       </div>
     );
   }

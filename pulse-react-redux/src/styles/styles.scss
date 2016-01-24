@@ -19,6 +19,13 @@ $vin-red: #ff0000;
   //color: #FFC271;
   background-color: #FFC271;
   border-radius: 50%;
+
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: #CCCCCC;
+  }
+
   //@include calc(border-radius, '100% / 2px');
 }
 

@@ -1,4 +1,4 @@
-import {REQUEST_LOGIN_USER, RECEIVE_LOGIN_USER, REQUEST_CLASSES, RECEIVE_CLASSES} from '../constants/ActionTypes';
+import {REQUEST_LOGIN_USER, RECEIVE_LOGIN_USER, REQUEST_CLASSES, RECEIVE_CLASSES, SET_CURRENT_CLASS, REQUEST_CLASS_SESSIONS, RECEIVE_CLASS_SESSIONS} from '../constants/ActionTypes';
 import objectAssign from 'object-assign';
 
 const initialState = {
@@ -13,7 +13,10 @@ const initialState = {
     didInvalidate: false
   },
   currentClassState: {
-    currentClass: null
+    currentClass: null,
+    classSessions: null,
+    isFetchingClassSessions: false,
+    didInvalidateClassSessions: false
   }
 }
 
@@ -47,6 +50,27 @@ export default function pulseAppState(state = initialState, action) {
           pulseClasses: action.pulseClasses,
           isFetching: false,
           didInvalidate: false
+        }
+      });
+    case SET_CURRENT_CLASS:
+      return Object.assign({}, state, {
+        currentClassState: {
+          currentClass: action.index
+        }
+      });
+    case REQUEST_CLASS_SESSIONS:
+      return Object.assign({}, state, {
+        currentClassState: {
+          isFetchingClassSessions: true,
+          didInvalidateClassSessions: false
+        }
+      });
+    case RECEIVE_CLASS_SESSIONS:
+      return Object.assign({}, state, {
+        currentClassState: {
+          classSessions: action.classSessions,
+          isFetchingClassSessions: false,
+          didInvalidateClassSessions: false
         }
       });
     default:

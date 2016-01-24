@@ -1,4 +1,7 @@
 import React, {PropTypes} from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as PulseActions from '../actions/pulseActions';
 import ClassesOverview from './ClassesOverview';
 
 class PulseSummary extends React.Component {
@@ -9,7 +12,7 @@ class PulseSummary extends React.Component {
   render() {
     const {pulseAppState, actions } = this.props;
     var loggedInStatus;
-    if(!this.props.pulseAppState.user.currentUser) {
+    if(!pulseAppState.user.currentUser) {
       loggedInStatus = (<h1>GET REKT, NOT LOGGED IN</h1>);
     } else {
       loggedInStatus = (
@@ -56,4 +59,19 @@ PulseSummary.propTypes = {
   pulseAppState: PropTypes.object.isRequired
 };
 
-export default PulseSummary;
+function mapStateToProps(state) {
+  return {
+    pulseAppState: state.pulseAppState
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(PulseActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PulseSummary);
