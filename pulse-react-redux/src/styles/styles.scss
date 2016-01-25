@@ -1,6 +1,8 @@
 $icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 @import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+@import "../../node_modules/react-bootstrap-table/css/react-bootstrap-table-all.min.css";
+
 @mixin calc($property, $expression) {
   #{$property}: -moz-calc(#{$expression});
   #{$property}: -webkit-calc(#{$expression});

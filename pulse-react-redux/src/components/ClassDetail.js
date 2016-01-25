@@ -2,7 +2,9 @@ import React, {PropTypes} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as PulseActions from '../actions/pulseActions';
-import {Table} from 'react-bootstrap';
+import {Table, Grid, Row, Col} from 'react-bootstrap';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+
 class ClassDetail extends React.Component {
   componentDidMount() {
     console.log("detail params");
@@ -46,10 +48,48 @@ class ClassDetail extends React.Component {
       )
     }
 
+    let studentData = [
+      {
+        name: "Al Allect",
+        grade: "90%"
+      },
+      {
+        name: "Bill Blasio",
+        grade: "43%"
+      },
+      {
+        name: "Hillary Clinton",
+        grade: "10%"
+      },
+      {
+        name: "Bernie Sanders",
+        grade: "120%"
+      }
+    ];
+
+    var options = {
+      sortName: "name",
+      sortOrder: "desc"
+    };
+
     return (
       <div>
-      {sessionTable}
-        </div>
+        <Grid>
+          <Row className="show-grid">
+            <Col md={6}>
+              <h4>Sessions</h4>
+              {sessionTable}
+            </Col>
+            <Col md={6}>
+              <h4>Top Students</h4>
+              <BootstrapTable data={studentData} options={options}>
+                <TableHeaderColumn dataField="name" isKey={true} dataSort={true}>Name</TableHeaderColumn>
+                <TableHeaderColumn dataField="grade" dataSort={true}>Grade</TableHeaderColumn>
+              </BootstrapTable>
+            </Col>
+          </Row>
+        </Grid>
+      </div>
     );
   }
 }
