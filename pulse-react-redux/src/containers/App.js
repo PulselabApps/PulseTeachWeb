@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import * as PulseActions from '../actions/pulseActions';
 import PulseSummary from '../components/PulseSummary';
 import Navbar from '../components/PartialComponents/Navbar';
+
 // import FuelSavingsApp from '../components/FuelSavingsApp';
 // import * as FuelSavingsActions from '../actions/fuelSavingsActions';
 
@@ -21,8 +22,10 @@ class App extends React.Component {
     return (
       <div>
         <Navbar user={pulseAppState.user} actions={actions}/>
-        <h1>Hello</h1>
-        {this.props.children}
+        <div className="starter-template">
+          <h1>Hello</h1>
+          {this.props.children}
+        </div>
       </div>
     );
   }

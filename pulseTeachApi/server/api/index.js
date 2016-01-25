@@ -88,24 +88,67 @@ export default function() {
 		.then(json => res.json(json));
 	});
 
-	api.get('/user/classes', (req, res) => {
-		if(!req.query || req.query.sessionToken === null) { res.json({error: 'user not logged in', errorCode: 1001})}
-		var token = req.query.sessionToken;
-		var query = new Parse.Query("Question");
-		// query.equalTo("sessionToken", token);
-		query.find({sessionToken: token,
-			success: (results) => {
-				console.log(results);
-				res.json({
-					token: {
-						app: constants.applicationId,
-						jKey: constants.javaScriptKey
-					}, results});
-			}, error: (error) => {
-				res.json(error);
-			}
-		})
-	});
+	//api.get('/user/classes', (req, res) => {
+	//	if(!req.query || req.query.sessionToken === null) { res.json({error: 'user not logged in', errorCode: 1001})}
+	//	var token = req.query.sessionToken;
+	//	var query = new Parse.Query("Question");
+	//	// query.equalTo("sessionToken", token);
+	//	query.find({sessionToken: token,
+	//		success: (results) => {
+	//			console.log(results);
+	//			res.json({
+	//				token: {
+	//					app: constants.applicationId,
+	//					jKey: constants.javaScriptKey
+	//				}, results});
+	//		}, error: (error) => {
+	//			res.json(error);
+	//		}
+	//	})
+	//});
+
+	api.get('/class/:id', (req, res) => {
+        if(!req.query || req.query.sessionToken === null) { res.json({error: 'user not logged in', errorCode: 1001})}
+        var token = req.query.sessionToken;
+        var id = req.params.id;
+        var query = new Parse.Query("Class");
+        query.get(id, {sessionToken: token,
+            success: (results) => {
+                console.log(results);
+                res.json(results);
+            },
+            error: (error) => {
+                console.log(error);
+                res.json(error);
+            }
+        });
+    });
+
+    api.get('/class/:id/sessions', (req, res) => {
+        if(!req.query || req.query.sessionToken === null) { res.json({error: 'user not logged in', errorCode: 1001})}
+        var token = req.query.sessionToken;
+        var id = req.params.id;
+        var query = new Parse.Query("Class");
+        query.get(id, {sessionToken: token,
+            success: (results) => {
+                console.log(results);
+                var sessionQuery = new Parse.Query("ClassSession_Beta");
+                sessionQuery.equalTo("classIn", results);
+                sessionQuery.find({sessionToken: token,
+                    success: (results) => {
+                        res.json(results);
+                    },
+                    error: (error) => {
+                        res.json(error);
+                    }
+                });
+            },
+            error: (error) => {
+                console.log(error);
+                res.json(error);
+            }
+        });
+    });
 
 	return api;
 }

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import App from './containers/App';
 import PulseSummary from './components/PulseSummary';
+import ClassDetail from './components/ClassDetail';
 import configureStore from './store/configureStore';
 import './styles/styles.scss'; //Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 //import '../node_modules/jquery/dist/jquery.min';
@@ -18,6 +19,7 @@ render(
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={PulseSummary} />
+        <Route path="/class/:classId" component={ClassDetail} />
       </Route>
     </Router>
   </Provider>, document.getElementById('app')

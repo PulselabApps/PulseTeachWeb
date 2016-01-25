@@ -14,12 +14,18 @@ import rootReducer from '../reducers';
 import DevTools from '../containers/DevTools';
 import createHistory from 'history/lib/createHashHistory';
 
-const reducer = compose(
-  mergePersistedState()
-)(rootReducer);
+//const reducer = compose(
+//  mergePersistedState((initialState, persistedState) => {
+//    console.log("Persisted")
+//    console.log(persistedState);
+//    return Object.assign({}, initialState, {
+//      user: persistedState
+//    });
+//  })
+//)(rootReducer);
 
 const storage = compose(
-  filter('pulseAppState')
+  filter('pulseAppState.user')
 )(adapter(window.localStorage));
 
 const history = createHistory();
@@ -37,8 +43,8 @@ const finalCreateStore = compose(
 
 export default function configureStore(initialState) {
   // Add middleware
-  //const store = finalCreateStore(rootReducer, initialState);
-  const store = finalCreateStore(reducer, initialState);
+  const store = finalCreateStore(rootReducer, initialState);
+  //const store = finalCreateStore(reducer, initialState);
   //reduxRouterMiddleware.listenForReplays(store);
   // Configure the store for hot reloading
   if (module.hot) {

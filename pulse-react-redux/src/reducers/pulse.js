@@ -1,6 +1,6 @@
 import {REQUEST_LOGIN_USER, RECEIVE_LOGIN_USER, REQUEST_CLASSES, RECEIVE_CLASSES, SET_CURRENT_CLASS, REQUEST_CLASS_SESSIONS, RECEIVE_CLASS_SESSIONS} from '../constants/ActionTypes';
 import objectAssign from 'object-assign';
-
+import {actionTypes} from 'redux-localstorage';
 const initialState = {
   user : {
     currentUser: null,
@@ -22,6 +22,14 @@ const initialState = {
 
 export default function pulseAppState(state = initialState, action) {
   switch (action.type) {
+    case actionTypes.INIT:
+      const persistedState = action.payload.pulseAppState;
+      console.log("Blah Per");
+      console.log(state);
+      console.log(persistedState);
+      return Object.assign({}, state, {
+        user: persistedState.user
+      });
     case REQUEST_LOGIN_USER:
       return Object.assign({}, state, {
         user: {

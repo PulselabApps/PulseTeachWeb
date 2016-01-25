@@ -114,7 +114,7 @@ export function fetchClassSessions(settings) {
     const url = serverConstants.getClassSessions(settings.classId) + "?sessionToken=" + settings.sessionToken;
     return fetch(url)
       .then(response => response.json())
-      .then(json => dispatch(receiveClasses(json)));
+      .then(json => dispatch(receiveClassSessions(json)));
   }
 }
 
@@ -130,6 +130,8 @@ export function shouldFetchClassSessions(state) {
 }
 
 export function fetchClassSessionsIfNeeded(settings) {
+  console.log("Insiide fetch session");
+  console.log(settings);
   return (dispatch, getState) => {
     if(shouldFetchClassSessions(getState())) {
       return dispatch(fetchClassSessions(settings));

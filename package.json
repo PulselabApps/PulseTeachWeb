@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pulseTeach": "parallelshell \"cd ./pulse-react-redux && npm start -s\" \"cd ./pulseTeachApi && npm start -s\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "cz-conventional-changelog": "^1.1.5"
+    "cz-conventional-changelog": "^1.1.5",
+    "parallelshell": "2.0.0"
   },
   "config": {
     "commitizen": {
