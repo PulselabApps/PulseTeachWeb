@@ -27,7 +27,8 @@ export default function() {
 			},
 			error: (user, error) => {
 				res.json({
-					error: 'poop'
+					error: 'poop',
+					errorMessage: error
 				});
 			}
 		});
@@ -62,17 +63,47 @@ export default function() {
 		if(!req.query || req.query.sessionToken === null) { res.json({error: 'user not logged in', errorCode: 1001})}
 		var token = req.query.sessionToken;
 		getUser(token, (user) => {
-			var query = new Parse.Query("Class");
-			query.equalTo("teacher", user);
-			query.find({sessionToken: token,
+			var userClasses = user.relation("classes");
+			userClasses.query().find({
 				success: (results) => {
 					res.json(results);
 				},
 				error: (error) => {
 					res.json(error);
-				}});
+				}
+			})
 		});
 	});
+
+	//api.get('/populate', (req, res) => {
+	//	let classId = "vrIqsmWXnb";
+	//	let sessionId = "swiH98RqEY";
+	//	var classQuery = new Parse.Query("Class");
+	//	classQuery.get(classId, {
+	//		success: (currentClass) => {
+	//			var sessionQuery = new Parse.Query("ClassSession");
+	//			sessionQuery.get(sessionId, {
+	//				success: (currentSession) => {
+	//					var sessions = currentClass.relation("classSessions");
+	//					sessions.add(currentSession);
+	//					currentClass.save({
+	//						success: (object) => {
+	//							res.json(object);
+	//						},
+	//						error: (object, error) => {
+	//							res.json(error);
+	//						}
+	//					});
+	//				},
+	//				error: (error) => {
+	//					res.json(error);
+	//				}
+	//			});
+	//		}, error: (error) => {
+	//			res.json(error);
+	//		}
+	//	})
+	//});
 
 	api.get('/user/valid', (req, res) => {
 		if(!req.query || req.query.sessionToken === null) { res.json({error: 'user not logged in', errorCode: 1001})}
@@ -130,18 +161,18 @@ export default function() {
         var id = req.params.id;
         var query = new Parse.Query("Class");
         query.get(id, {sessionToken: token,
-            success: (results) => {
-                console.log(results);
-                var sessionQuery = new Parse.Query("ClassSession_Beta");
-                sessionQuery.equalTo("classIn", results);
-                sessionQuery.find({sessionToken: token,
-                    success: (results) => {
-                        res.json(results);
-                    },
-                    error: (error) => {
-                        res.json(error);
-                    }
-                });
+            success: (result) => {
+                console.log(result);
+                var classSessions = result.relation("classSessions");
+				classSessions.query().find({
+					success: (results) => {
+						res.json(results);
+					},
+					error: (error) => {
+						res.josn(error);
+					}
+
+				})
             },
             error: (error) => {
                 console.log(error);
